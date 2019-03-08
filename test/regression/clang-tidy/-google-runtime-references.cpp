@@ -17,10 +17,7 @@
 /// This test checks that google-runtime-references is *disabled*.
 /// \see https://clang.llvm.org/extra/clang-tidy/checks/google-runtime-references.html.
 
-void out_param(int& x)
-{
-   x = 0;
-}
+void out_param(int& x) { x = 0; }
 
 int main()
 {

@@ -21,12 +21,9 @@
 #include <iostream>
 #include <string>
 
-namespace test {
-   inline namespace string_literals {
-      std::string operator""_s(char const* str, std::size_t)
-      { return str; }
-   }
-}
+namespace test { inline namespace string_literals {
+   std::string operator""_s(char const* str, std::size_t) { return str; }
+}}   // namespace test::string_literals
 
 int main()
 {

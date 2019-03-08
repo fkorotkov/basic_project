@@ -19,18 +19,13 @@
 
 class iterator {
 public:
-   iterator& operator++() noexcept
-   { return *this; }
+   iterator& operator++() noexcept { return *this; }
 
-   iterator operator++(int) noexcept
-   { return *this; }
+   iterator operator++(int) noexcept { return *this; }
 
-   iterator& operator--() noexcept
-   { return *this; }
+   iterator& operator--() noexcept { return *this; }
 
-   iterator operator--(int) noexcept
-   { return *this; }
+   iterator operator--(int) noexcept { return *this; }
 };
 
-int main()
-{}
+int main() {}

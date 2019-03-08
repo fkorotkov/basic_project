@@ -17,5 +17,4 @@
 /// This test checks that readability-named-parameter is *disabled*.
 /// \see https://clang.llvm.org/extra/clang-tidy/checks/readability-named-parameter.html.
 
-int main(int, char**)
-{}
+int main(int, char**) {}
