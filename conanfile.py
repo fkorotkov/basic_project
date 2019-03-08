@@ -17,24 +17,24 @@ from conans import ConanFile, CMake, RunEnvironment, tools
 import os
 
 class Project_name(ConanFile):
-   name = "project_name"
-   version = "1.0"
-   settings = "os", "compiler", "arch", "build_type"
-   generators = "cmake", "cmake_paths", "virtualrunenv"
-   requires = "range-v3/1.0.0@cjdb/stable"
-   exports_sources = "CMakeLists.txt", ".clang*", "test/*", "src/*", "cmake/*"
-   no_copy_source = True
+    name = "project_name"
+    version = "1.0"
+    settings = "os", "compiler", "arch", "build_type"
+    generators = "cmake", "cmake_paths", "virtualrunenv"
+    requires = "range-v3/1.0.0@cjdb/stable"
+    exports_sources = "CMakeLists.txt", ".clang*", "test/*", "src/*", "cmake/*"
+    no_copy_source = True
 
-   def build(self):
-      cmake = CMake(self)
+    def build(self):
+        cmake = CMake(self)
 
-      cmake.configure()
-      cmake.build()
+        cmake.configure()
+        cmake.build()
 
-      env_build = RunEnvironment(self)
-      with tools.environment_append(env_build.vars):
-         if self.should_test:
-            self.run("ctest -j %s --output-on-failure" % tools.cpu_count())
+        env_build = RunEnvironment(self)
+        with tools.environment_append(env_build.vars):
+            if self.should_test:
+                self.run("ctest -j %s --output-on-failure" % tools.cpu_count())
 
-   def package_info(self):
-self.env_info.PATH.append(os.path.join(self.package_folder, "bin"))
+    def package_info(self):
+        self.env_info.PATH.append(os.path.join(self.package_folder, "bin"))

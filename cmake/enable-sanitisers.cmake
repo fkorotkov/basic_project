@@ -18,9 +18,9 @@
 # of release mode is necessary).
 #
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND "${CMAKE_BUILD_TYPE}" MATCHES "Rel")
-   set(CJDB_ENABLE_CFI "cfi")
+   set(${PROJECT_NAME}_ENABLE_CFI "cfi")
 else()
-   set(CJDB_ENABLE_CFI "")
+   set(${PROJECT_NAME}_ENABLE_CFI "")
 endif()
 
 find_package(Sanitizer
@@ -28,7 +28,7 @@ find_package(Sanitizer
       address            # see https://clang.llvm.org/docs/AddressSanitizer.html
       undefined          # see https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
       thread             # see https://clang.llvm.org/docs/ThreadSanitizer.html
-      ${CJDB_ENABLE_CFI} # see https://clang.llvm.org/docs/ControlFlowIntegrity.html
+      ${${PROJECT_NAME}_ENABLE_CFI} # see https://clang.llvm.org/docs/ControlFlowIntegrity.html
 
    OPTIONAL_COMPONENTS   # LLVM supports significantly more sanitisers than GCC.
       dataflow           # see https://clang.llvm.org/docs/DataFlowSanitizer.html

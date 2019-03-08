@@ -46,3 +46,5 @@ task:
   tests_script:
     - cd build
     - ctest -j 8 --output-on-failure
+  clang_format_script:
+    - ../config/hooks/clang-format.sh

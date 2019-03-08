@@ -44,5 +44,6 @@ if [[ -z `git status --porcelain --untracked-files=no` ]]; then
    exit 0
 else
    echo "Changes were identified after formatting: please commit these changes and re-try pushing."
+   git diff
    exit 1
 fi

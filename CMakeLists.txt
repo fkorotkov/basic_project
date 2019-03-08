@@ -15,30 +15,58 @@
 #
 cmake_minimum_required(VERSION 3.13)
 
-set(CJDB_PROJECT_NAME "PROJECT_NAME")
-
-project(${CJDB_PROJECT_NAME} CXX)
-add_library(${CJDB_PROJECT_NAME} INTERFACE)
+project("basic_project" CXX)
+add_library(${PROJECT_NAME} INTERFACE)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# clang-tidy options
+option(${PROJECT_NAME}_ENABLE_CLANG_TIDY
+   "Determines if clang-tidy is enabled or disabled. Enabled by default."
+   ON)
+set(${PROJECT_NAME}_CLANG_TIDY_PATH
+   "/usr/bin/clang-tidy"
+   CACHE STRING
+      "Sets the path for clang-tidy. Set to \"/usr/bin/clang-tidy\" by default.")
+
+# IWYU options
+option(${PROJECT_NAME}_ENABLE_IWYU
+   "Switch determines if include-what-you-use is enabled or disabled. Enabled by default."
+   ON)
+set(${PROJECT_NAME}_IWYU_PATH
+   "/usr/bin/iwyu"
+   CACHE STRING
+      "Sets the path for IWYU. Set to \"/usr/bin/iwyu\" by default.")
+
+# Coverage options
+set(${PROJECT_NAME}_code_coverage_options Off gcov LLVMSourceCoverage)
+set(${PROJECT_NAME}_CODE_COVERAGE "gcov"
+   CACHE STRING "Enables/disables code coverage. Options are Off, GCov, and LLVMSourceCoverage.")
+set_property(CACHE ${PROJECT_NAME}_CODE_COVERAGE PROPERTY STRINGS ${${PROJECT_NAME}_code_coverage_options})
+
+if(NOT ${PROJECT_NAME}_CODE_COVERAGE IN_LIST ${PROJECT_NAME}_code_coverage_options)
+   message(FATAL_ERROR "${PROJECT_NAME}_CODE_COVERAGE must be one of ${${PROJECT_NAME}_code_coverage_options}.")
+endif()
 
 include("${CMAKE_BINARY_DIR}/conan_paths.cmake" REQUIRED)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-include(options)
+# Project configuration
 include(enable-sanitisers)
 include(enable-clang-tidy)
-include(build)
+include(enable-iwyu)
+include(add_build_targets)
 
 find_package(CodeCoverage REQUIRED)
 
 enable_testing()
 include(CTest)
 
-set(PROJECT_DIRECTORY_PREFIX "${CJDB_PROJECT_NAME}")
+set(PROJECT_DIRECTORY_PREFIX "${PROJECT_NAME}")
 add_subdirectory(source)
 add_subdirectory(test)
