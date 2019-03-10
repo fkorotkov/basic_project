@@ -10,8 +10,8 @@ build_type=Release
 [options]
 [build_requires]
 [env]
-CC=/opt/llvm-8/bin/clang
-CXX=/opt/llvm-8/bin/clang++
+CC=/usr/bin/clang-8
+CXX=/usr/bin/clang++-8
 CXXFLAGS=-fsanitize=memory -fsanitize-memory-track-origins -fno-omit-frame-pointer -stdlib=libc++ -nostdinc++ -cxx-isystem /opt/llvm-8/include/c++/v1
 LDFLAGS=-fuse-ld=lld -L /opt/llvm-8/lib/ -Wl,-rpath,/opt/llvm-8/lib/ -lc++abi
 CONAN_CMAKE_GENERATOR=Ninja

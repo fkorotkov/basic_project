@@ -10,7 +10,7 @@ build_type=Release
 [options]
 [build_requires]
 [env]
-CC=/opt/llvm-7/bin/clang
-CXX=/opt/llvm-7/bin/clang++
+CC=/usr/bin/clang-7
+CXX=/usr/bin/clang++-7
 LDFLAGS=-fuse-ld=lld
 CONAN_CMAKE_GENERATOR=Ninja
