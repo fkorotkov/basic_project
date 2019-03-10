@@ -16,30 +16,30 @@
 task:
   env:
     matrix:
-      - PROFILE: gcc-5
-        ENABLE_CLANG_TIDY: On
-      - PROFILE: gcc-6
-        ENABLE_CLANG_TIDY: On
-      - PROFILE: gcc-7
-        ENABLE_CLANG_TIDY: On
+      # - PROFILE: gcc-5
+      #   ENABLE_CLANG_TIDY: On
+      # - PROFILE: gcc-6
+      #   ENABLE_CLANG_TIDY: On
+      # - PROFILE: gcc-7
+      #   ENABLE_CLANG_TIDY: On
       - PROFILE: gcc-8
-        ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-4
-        ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-4-libcxx
-        ENABLE_CLANG_TIDY: On
+      #   ENABLE_CLANG_TIDY: On
+      # - PROFILE: clang-4
+      #   ENABLE_CLANG_TIDY: On
+      # - PROFILE: clang-4-libcxx
+      #   ENABLE_CLANG_TIDY: On
       # - PROFILE: clang-4-libcxx-msan
       #   ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-5
-        ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-5-libcxx
-        ENABLE_CLANG_TIDY: On
+      # - PROFILE: clang-5
+      #   ENABLE_CLANG_TIDY: On
+      # - PROFILE: clang-5-libcxx
+      #   ENABLE_CLANG_TIDY: On
       # - PROFILE: clang-5.0-libcxx-msan
       #   ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-6
-        ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-6-libcxx
-        ENABLE_CLANG_TIDY: On
+      # - PROFILE: clang-6
+      #   ENABLE_CLANG_TIDY: On
+      # - PROFILE: clang-6-libcxx
+      #   ENABLE_CLANG_TIDY: On
       # - PROFILE: clang-6.0-libcxx-msan
       #   ENABLE_CLANG_TIDY: On
       - PROFILE: clang-7
