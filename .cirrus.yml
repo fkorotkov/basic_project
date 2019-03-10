@@ -24,21 +24,21 @@ task:
         ENABLE_CLANG_TIDY: On
       - PROFILE: gcc-8
         ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-4.0
+      - PROFILE: clang-4
         ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-4.0-libcxx
+      - PROFILE: clang-4-libcxx
         ENABLE_CLANG_TIDY: On
-      # - PROFILE: clang-4.0-libcxx-msan
+      # - PROFILE: clang-4-libcxx-msan
       #   ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-5.0
+      - PROFILE: clang-5
         ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-5.0-libcxx
+      - PROFILE: clang-5-libcxx
         ENABLE_CLANG_TIDY: On
       # - PROFILE: clang-5.0-libcxx-msan
       #   ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-6.0
+      - PROFILE: clang-6
         ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-6.0-libcxx
+      - PROFILE: clang-6-libcxx
         ENABLE_CLANG_TIDY: On
       # - PROFILE: clang-6.0-libcxx-msan
       #   ENABLE_CLANG_TIDY: On
