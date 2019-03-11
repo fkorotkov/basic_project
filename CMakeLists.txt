@@ -19,7 +19,7 @@ project("basic_project" CXX)
 add_library(${PROJECT_NAME} INTERFACE)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -43,13 +43,13 @@ set(${PROJECT_NAME}_IWYU_PATH
       "Sets the path for IWYU. Set to \"/usr/bin/iwyu\" by default.")
 
 # Coverage options
-set(${PROJECT_NAME}_code_coverage_options Off gcov LLVMSourceCoverage)
-set(${PROJECT_NAME}_CODE_COVERAGE "gcov"
+set(CJDB_CODE_COVERAGE_options Off gcov LLVMSourceCoverage)
+set(CJDB_CODE_COVERAGE "gcov"
    CACHE STRING "Enables/disables code coverage. Options are Off, GCov, and LLVMSourceCoverage.")
-set_property(CACHE ${PROJECT_NAME}_CODE_COVERAGE PROPERTY STRINGS ${${PROJECT_NAME}_code_coverage_options})
+set_property(CACHE CJDB_CODE_COVERAGE PROPERTY STRINGS ${CJDB_CODE_COVERAGE_options})
 
-if(NOT ${PROJECT_NAME}_CODE_COVERAGE IN_LIST ${PROJECT_NAME}_code_coverage_options)
-   message(FATAL_ERROR "${PROJECT_NAME}_CODE_COVERAGE must be one of ${${PROJECT_NAME}_code_coverage_options}.")
+if(NOT CJDB_CODE_COVERAGE IN_LIST CJDB_CODE_COVERAGE_options)
+   message(FATAL_ERROR "CJDB_CODE_COVERAGE must be one of ${CJDB_CODE_COVERAGE_options}.")
 endif()
 
 include("${CMAKE_BINARY_DIR}/conan_paths.cmake" REQUIRED)
