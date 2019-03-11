@@ -16,64 +16,18 @@
 task:
   env:
     matrix:
-      # - PROFILE: gcc-5
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: gcc-6
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: gcc-7
-      #   ENABLE_CLANG_TIDY: On
-      - PROFILE: gcc-8
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: clang-4
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: clang-4-libcxx
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: clang-4-libcxx-msan
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: clang-5
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: clang-5-libcxx
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: clang-5.0-libcxx-msan
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: clang-6
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: clang-6-libcxx
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: clang-6.0-libcxx-msan
-      #   ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-7
-        ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-7-libcxx
-        ENABLE_CLANG_TIDY: On
-      # - PROFILE: clang-7-libcxx-msan
-      #   ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-8
-        ENABLE_CLANG_TIDY: On
-      - PROFILE: clang-8-libcxx
-        ENABLE_CLANG_TIDY: On
-      # - PROFILE: clang-8-libcxx-msan
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: msys2_mingw-5
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: msys2_mingw-6
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: msys2_mingw-7
-      #   ENABLE_CLANG_TIDY: On
-      # - PROFILE: msys2_mingw-8
-      #   ENABLE_CLANG_TIDY: On
-    matrix:
       - BUILD_TYPE: Debug
-      - BUILD_TYPE: RelWithDebInfo
+        ENABLE_CLANG_TIDY: On
       - BUILD_TYPE: Release
+        ENABLE_CLANG_TIDY: On
   container:
     matrix:
-      - image: cjdb/xenial-cirrus-cpp-base:latest
-        cpu: 16
-        memory: 10G
-      - image: cjdb/bionic-cirrus-cpp-base:latest
-        cpu: 16
-        memory: 10G
+      - image: cjdb/xenial-gcc-5:latest
+      - image: cjdb/bionic-gcc-6:latest
+      - image: cjdb/bionic-gcc-7:latest
+      - image: cjdb/bionic-gcc-8:latest
+    cpu: 16
+    memory: 10G
   preconfig_script:
     - mkdir build
   conan_config_install_script:
