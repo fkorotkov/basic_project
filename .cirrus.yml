@@ -16,6 +16,26 @@
 task:
   env:
     matrix:
+      # - PROFILE: gcc-5
+      # - PROFILE: gcc-6
+      # - PROFILE: gcc-7
+      - PROFILE: gcc-8
+      # - PROFILE: clang-4
+      # - PROFILE: clang-4-libcxx
+      # - PROFILE: clang-4-libcxx-msan
+      # - PROFILE: clang-5
+      # - PROFILE: clang-5-libcxx
+      # - PROFILE: clang-5-libcxx-msan
+      # - PROFILE: clang-6
+      # - PROFILE: clang-6-libcxx
+      # - PROFILE: clang-6-libcxx-msan
+      # - PROFILE: clang-7
+      # - PROFILE: clang-7-libcxx
+      # - PROFILE: clang-7-libcxx-msan
+      - PROFILE: clang-8
+      - PROFILE: clang-8-libcxx
+      # - PROFILE: clang-8-libcxx-msan
+    matrix:
       - BUILD_TYPE: Debug
         ENABLE_CLANG_TIDY: On
       - BUILD_TYPE: Release
@@ -28,8 +48,6 @@ task:
       # - image: cjdb/xenial-gcc-6:latest
       # - image: cjdb/xenial-gcc-7:latest
       - image: cjdb/xenial-gcc-8:latest
-        env:
-          - PROFILE: gcc-8
       ## LLVM
       # - image: cjdb/xenial-clang-4:latest
       # - image: cjdb/xenial-clang-5:latest
