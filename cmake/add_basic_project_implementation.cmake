@@ -45,12 +45,12 @@ function(add_impl target libraries)
          /w14928 # illegal copy-initialization; more than one user-defined conversion has been implicitly applied
          >
       $<$<CXX_COMPILER_ID:GNU>:
-         -Wall -Wextra
+         -Wall
+         -Wextra
          -Wcast-align
          -Wconversion
          -Wdouble-promotion
          -Wnon-virtual-dtor
-         -Wnull-dereference
          -Wold-style-cast
          -Woverloaded-virtual
          -Wpedantic
@@ -60,9 +60,13 @@ function(add_impl target libraries)
          -Wunused
          -Wformat=2
          -Wodr
-         -Wno-attributes>
+         -Wno-attributes
+         $<$<VERSION_GREATER:${CMAKE_CXX_COMPILER_VERSION},5>:
+            -Wnull-dereference>
+         >
       $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:
          -Weverything
+         -Wno-unused-command-line-argument
          -Wno-missing-prototypes
          -Wno-c++98-compat
          -Wno-c++98-compat-pedantic
