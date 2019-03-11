@@ -12,5 +12,5 @@ build_type=Release
 [env]
 CC=/usr/bin/clang-6.0
 CXX=/usr/bin/clang++-6.0
-LDFLAGS=-fuse-ld=/usr/bin/lld-6.0
+LDFLAGS=-fuse-ld=lld
 CONAN_CMAKE_GENERATOR=Ninja

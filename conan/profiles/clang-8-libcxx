@@ -13,5 +13,5 @@ build_type=Release
 CC=/usr/bin/clang-8
 CXX=/usr/bin/clang++-8
 CXXFLAGS=-stdlib=libc++ -nostdinc++ -cxx-isystem /opt/llvm-8.0/include/c++/v1
-LDFLAGS=-fuse-ld=/usr/bin/lld-8 -L /opt/llvm-8.0/lib/ -Wl,-rpath,/opt/llvm-8.0/lib/ -lc++abi
+LDFLAGS=-fuse-ld=lld -L /opt/llvm-8.0/lib/ -Wl,-rpath,/opt/llvm-8.0/lib/ -lc++abi
 CONAN_CMAKE_GENERATOR=Ninja
