@@ -17,7 +17,7 @@
 #define BASIC_PROJECT_REGRESSION_CLANG_TIDY_GOOGLE_BUILD_NAMESPACES_HPP
 
 namespace {
-   inline constexpr auto foo = 0;
-}
+   constexpr int foo() noexcept { return 0; }
+}   // namespace
 
 #endif   // BASIC_PROJECT_REGRESSION_CLANG_TIDY_GOOGLE_BUILD_NAMESPACES_HPP
