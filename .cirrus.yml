@@ -23,43 +23,43 @@ task:
   env:
     matrix:
       - PROFILE: gcc-5
-        ENABLE_COVERAGE: gcov
+        CODE_COVERAGE: gcov
       - PROFILE: gcc-6
-        ENABLE_COVERAGE: gcov
+        CODE_COVERAGE: gcov
       - PROFILE: gcc-7
-        ENABLE_COVERAGE: gcov
+        CODE_COVERAGE: gcov
       - PROFILE: gcc-8
-        ENABLE_COVERAGE: gcov
+        CODE_COVERAGE: gcov
       - PROFILE: clang-4
-        ENABLE_COVERAGE: LLVMSourceCoverage
+        CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-4-libcxx
-        ENABLE_COVERAGE: LLVMSourceCoverage
+        CODE_COVERAGE: LLVMSourceCoverage
       # - PROFILE: clang-4-libcxx-msan
-      #  ENABLE_COVERAGE: LLVMSourceCoverage
+      #  CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-5
-        ENABLE_COVERAGE: LLVMSourceCoverage
+        CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-5-libcxx
-        ENABLE_COVERAGE: LLVMSourceCoverage
+        CODE_COVERAGE: LLVMSourceCoverage
       # - PROFILE: clang-5-libcxx-msan
-      #  ENABLE_COVERAGE: LLVMSourceCoverage
+      #  CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-6
-        ENABLE_COVERAGE: LLVMSourceCoverage
+        CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-6-libcxx
-        ENABLE_COVERAGE: LLVMSourceCoverage
+        CODE_COVERAGE: LLVMSourceCoverage
       # - PROFILE: clang-6-libcxx-msan
-      #  ENABLE_COVERAGE: LLVMSourceCoverage
+      #  CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-7
-        ENABLE_COVERAGE: LLVMSourceCoverage
+        CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-7-libcxx
-        ENABLE_COVERAGE: LLVMSourceCoverage
+        CODE_COVERAGE: LLVMSourceCoverage
       # - PROFILE: clang-7-libcxx-msan
-      #  ENABLE_COVERAGE: LLVMSourceCoverage
+      #  CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-8
-        ENABLE_COVERAGE: LLVMSourceCoverage
+        CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-8-libcxx
-        ENABLE_COVERAGE: LLVMSourceCoverage
+        CODE_COVERAGE: LLVMSourceCoverage
       # - PROFILE: clang-8-libcxx-msan
-      #  ENABLE_COVERAGE: LLVMSourceCoverage
+      #  CODE_COVERAGE: LLVMSourceCoverage
     matrix:
       - BUILD_TYPE: Debug
         ENABLE_CLANG_TIDY: On
@@ -76,7 +76,7 @@ task:
   conan_build_configure_script:
     - cd build
     - conan build .. --configure
-    - cmake .. -DCJDB_ENABLE_CLANG_TIDY=${ENABLE_CLANG_TIDY} -DCJDB_ENABLE
+    - cmake .. -DCJDB_ENABLE_CLANG_TIDY=${ENABLE_CLANG_TIDY} -DCJDB_CODE_COVERAGE=${CODE_COVERAGE}
   build_script:
     - cd build
     - conan build .. --build
