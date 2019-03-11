@@ -23,9 +23,9 @@ task:
   container:
     matrix:
       - image: cjdb/xenial-gcc-5:latest
-      - image: cjdb/bionic-gcc-6:latest
-      - image: cjdb/bionic-gcc-7:latest
-      - image: cjdb/bionic-gcc-8:latest
+      - image: cjdb/xenial-gcc-6:latest
+      - image: cjdb/xenial-gcc-7:latest
+      - image: cjdb/xenial-gcc-8:latest
     cpu: 16
     memory: 10G
   preconfig_script:
