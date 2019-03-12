@@ -101,7 +101,9 @@ function(add_impl target libraries)
       message(STATUS "Linking ${i} with ${target}")
       target_link_libraries("${target}" PUBLIC ${i})
    endforeach()
-   target_link_libraries("${target}" PRIVATE CodeCoverage::all)
+   target_link_libraries("${target}" PRIVATE
+      $<$<BOOL:${CJDB_CODE_COVERAGE}>:CodeCoverage::all>
+      $<$<OR:$<STREQUAL:${CMAKE_BUILD_TYPE},Debug>,${PROJECT_NAME}_ENABLE_RELEASE_SANITISATION>:Sanitizer::all>)
    add_compile_options(-DRANGES_DEEP_STL_INTEGRATION=1)
 endfunction()
 

@@ -17,21 +17,31 @@
 # Control-flow integrity sanitisers can only be enabled when a linker supports LTO (thus some form
 # of release mode is necessary).
 #
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND "${CMAKE_BUILD_TYPE}" MATCHES "Rel")
-   set(${PROJECT_NAME}_ENABLE_CFI "cfi")
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND "${CMAKE_BUILD_TYPE}" MATCHES "Rel" AND ${PROJECT_NAME}_ENABLE_CFI)
+   set(${PROJECT_NAME}_enable_cfi "cfi")
 else()
-   set(${PROJECT_NAME}_ENABLE_CFI "")
+   set(${PROJECT_NAME}_enable_cfi "")
+endif()
+
+if(${PROJECT_NAME}_ENABLE_MSAN)
+   set(${PROJECT_NAME}_enable_msan "memory")
+else()
+   set(${PROJECT_NAME}_enable_msan "")
 endif()
 
 find_package(Sanitizer
-   REQUIRED COMPONENTS   # Sanitisers supported by both GCC and LLVM.
-      address            # see https://clang.llvm.org/docs/AddressSanitizer.html
-      undefined          # see https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
-      thread             # see https://clang.llvm.org/docs/ThreadSanitizer.html
-      ${${PROJECT_NAME}_ENABLE_CFI} # see https://clang.llvm.org/docs/ControlFlowIntegrity.html
+   REQUIRED COMPONENTS               # Sanitisers supported by both GCC and LLVM.
+      # address                        # see https://clang.llvm.org/docs/AddressSanitizer.html
+      undefined                      # see https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
+      # thread                         # see https://clang.llvm.org/docs/ThreadSanitizer.html
+      ${${PROJECT_NAME}_enable_cfi}  # see https://clang.llvm.org/docs/ControlFlowIntegrity.html
+      ${${PROJECT_NAME}_enable_msan} # see https://clang.llvm.org/docs/MemorySanitizer.html
 
    OPTIONAL_COMPONENTS   # LLVM supports significantly more sanitisers than GCC.
       dataflow           # see https://clang.llvm.org/docs/DataFlowSanitizer.html
       shadow-call-stack  # see https://clang.llvm.org/docs/ShadowCallStack.html
-      safe-stack         # see https://clang.llvm.org/docs/SafeStack.html
+      # safe-stack         # see https://clang.llvm.org/docs/SafeStack.html
 )
+
+unset(${PROJECT_NAME}_enable_cfi)
+unset(${PROJECT_NAME}_enable_msan)
