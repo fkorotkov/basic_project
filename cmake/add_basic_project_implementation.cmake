@@ -61,7 +61,7 @@ function(add_impl target libraries)
          -Wformat=2
          -Wodr
          -Wno-attributes
-         $<$<VERSION_GREATER:${CMAKE_CXX_COMPILER_VERSION},5>:
+         $<$<NOT:$<VERSION_LESS:${CMAKE_CXX_COMPILER_VERSION},6>>:
             -Wnull-dereference>
          >
       $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:
