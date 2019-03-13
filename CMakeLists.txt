@@ -123,7 +123,7 @@ include(enable-iwyu)
 include(add_build_targets)
 
 find_package(CodeCoverage REQUIRED)
-find_package(LibCXX REQUIRED)
+# find_package(LibCXX REQUIRED)
 
 enable_testing()
 include(CTest)

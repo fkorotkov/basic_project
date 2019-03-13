@@ -74,11 +74,9 @@ function(add_impl target libraries)
    # Warnings as errors
    target_compile_options("${target}" PRIVATE
       $<$<CXX_COMPILER_ID:MSVC>:
-         /WX
-      >
+         /WX>
       $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:
-         -Werror
-      >)
+         -Werror>)
    # Strict C++
    target_compile_options("${target}" PRIVATE
       $<$<CXX_COMPILER_ID:MSVC>:
@@ -94,8 +92,7 @@ function(add_impl target libraries)
          -fdiagnostics-color=always
          -fvisibility=default
          $<$<CONFIG:Debug>:
-            -fstack-protector-all
-         >
+            -fstack-protector-all>
       >)
 
    target_include_directories("${target}" PUBLIC "${PROJECT_SOURCE_DIR}/include")
@@ -106,12 +103,8 @@ function(add_impl target libraries)
    endforeach()
 
    target_link_libraries("${target}" PRIVATE
-      $<$<BOOL:${CJDB_CODE_COVERAGE}>:
-         CodeCoverage::all
-      >
-      $<$<OR:$<CONFIG:Debug>,$<BOOL:${PROJECT_NAME}_SANITISE_RELEASE>>:
-         Sanitizer::all
-      >)
+      $<$<BOOL:${CJDB_CODE_COVERAGE}>:CodeCoverage::all>
+      $<$<OR:$<CONFIG:Debug>,$<BOOL:${PROJECT_NAME}_SANITISE_RELEASE>>:Sanitizer::all>)
 
    add_compile_options(-DRANGES_DEEP_STL_INTEGRATION=1)
 endfunction()
