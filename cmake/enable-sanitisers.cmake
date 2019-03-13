@@ -14,34 +14,36 @@
 # limitations under the License.
 #
 
-# Control-flow integrity sanitisers can only be enabled when a linker supports LTO (thus some form
-# of release mode is necessary).
+# Check that AddressSanitizer doesn't clash with any of:
+#     ThreadSanitizer
+#     MemorySanitizer
+#     SafeStack
 #
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND "${CMAKE_BUILD_TYPE}" MATCHES "Rel" AND ${PROJECT_NAME}_ENABLE_CFI)
-   set(${PROJECT_NAME}_enable_cfi "cfi")
-else()
-   set(${PROJECT_NAME}_enable_cfi "")
-endif()
+function(flag_incompatible_sanitisers required optional)
+   list(JOIN required optional joined)
+   list(FIND joined "address" result)
+   if(result GREATER -1)
+      list(FIND joined "thread" thread_result)
+      if(thread_result GREATER -1)
+         message(SEND_ERROR "Cannot enable both AddressSanitizer and ThreadSanitizer.")
+      endif()
 
-if(${PROJECT_NAME}_ENABLE_MSAN)
-   set(${PROJECT_NAME}_enable_msan "memory")
-else()
-   set(${PROJECT_NAME}_enable_msan "")
-endif()
+      list(FIND joined "memory" memory_result)
+      if(memory_result GREATER -1)
+         message(SEND_ERROR "Cannot enable both AddressSanitizer and MemorySanitizer.")
+      endif()
+
+      list(FIND joined "safe-stack" safe_stack_result)
+      if(safe_stack_result GREATER -1)
+         message(SEND_ERROR "Cannot enable both AddressSanitizer and SafeStack.")
+      endif()
+   endif()
+endfunction()
+
+flag_incompatible_sanitisers(
+   ${PROJECT_NAME}_REQUIRED_SANITISERS
+   ${PROJECT_NAME}_OPTIONAL_SANITISERS)
 
 find_package(Sanitizer
-   REQUIRED COMPONENTS               # Sanitisers supported by both GCC and LLVM.
-      # address                        # see https://clang.llvm.org/docs/AddressSanitizer.html
-      undefined                      # see https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
-      # thread                         # see https://clang.llvm.org/docs/ThreadSanitizer.html
-      ${${PROJECT_NAME}_enable_cfi}  # see https://clang.llvm.org/docs/ControlFlowIntegrity.html
-      ${${PROJECT_NAME}_enable_msan} # see https://clang.llvm.org/docs/MemorySanitizer.html
-
-   OPTIONAL_COMPONENTS   # LLVM supports significantly more sanitisers than GCC.
-      dataflow           # see https://clang.llvm.org/docs/DataFlowSanitizer.html
-      shadow-call-stack  # see https://clang.llvm.org/docs/ShadowCallStack.html
-      # safe-stack         # see https://clang.llvm.org/docs/SafeStack.html
-)
-
-unset(${PROJECT_NAME}_enable_cfi)
-unset(${PROJECT_NAME}_enable_msan)
+   REQUIRED COMPONENTS ${${PROJECT_NAME}_REQUIRED_SANITISERS}
+   OPTIONAL_COMPONENTS ${${PROJECT_NAME}_OPTIONAL_SANITISERS})

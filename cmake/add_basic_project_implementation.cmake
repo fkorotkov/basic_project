@@ -103,7 +103,7 @@ function(add_impl target libraries)
    endforeach()
    target_link_libraries("${target}" PRIVATE
       $<$<BOOL:${CJDB_CODE_COVERAGE}>:CodeCoverage::all>
-      $<$<OR:$<STREQUAL:${CMAKE_BUILD_TYPE},Debug>,${PROJECT_NAME}_ENABLE_RELEASE_SANITISATION>:Sanitizer::all>)
+      $<$<OR:$<CONFIG:Debug>,0>:Sanitizer::all>)
    add_compile_options(-DRANGES_DEEP_STL_INTEGRATION=1)
 endfunction()
 

@@ -32,7 +32,7 @@ basic_project_enumerated_option(
    OPTION_NAME ${PROJECT_NAME}_LLVM_VERSION
    DESCRIPTION "Determines the version of LLVM tools to build with"
    TYPE STRING
-   VALID_VALUES "" 4 5 6 7 8)
+   EXPECTS "" 4 5 6 7 8)
 
 # clang-tidy options
 option(${PROJECT_NAME}_ENABLE_CLANG_TIDY "Builds with clang-tidy, if available. Defaults to ON." ON)
@@ -51,8 +51,9 @@ BASIC_PROJECT_MULTILINE_STRING(option_description
    " Defaults to \"/opt/llvm-${${PROJECT_NAME}_${LLVM_VERSION}}\"."
 )
 set(${PROJECT_NAME}_LIBCXX_ROOT_DIR
-   "/opt/llvm-${${PROJECT_NAME}_${LLVM_VERSION}}/include/c++/v1" CACHE
-   STRING ${option_description})
+   "/opt/llvm-${${PROJECT_NAME}_LLVM_VERSION}.0/include/c++/v1" CACHE
+   STRING ${option_description}
+   FORCE)
 
 # Options for libc++abi
 CMAKE_DEPENDENT_OPTION(${PROJECT_NAME}_ENABLE_LIBCXXABI
@@ -61,48 +62,55 @@ CMAKE_DEPENDENT_OPTION(${PROJECT_NAME}_ENABLE_LIBCXXABI
    OFF)
 set(${PROJECT_NAME}_LIBCXXABI_ROOT_DIR
    "${${PROJECT_NAME}_LIBCXX_ROOT_DIR}" CACHE
-   STRING "The path to the root directory for libc++. Defaults to ${PROJECT_NAME}_LIBCXX_ROOT_DIR.")
+   STRING "The path to the root directory for libc++. Defaults to ${PROJECT_NAME}_LIBCXX_ROOT_DIR."
+   FORCE)
 
 # Options for sanitisers
-BASIC_PROJECT_MULTILINE_STRING(option_description
-   "Builds ${PROJECT_NAME} binaries and tests with -fsanitize=memory."
-   "This requires a C++ Standard library built with MemorySanitizer."
-   "Defaults to OFF.")
-option(${PROJECT_NAME}_ENABLE_MSAN ${option_description} OFF)
-
-BASIC_PROJECT_MULTILINE_STRING(option_description
-   "Builds ${PROJECT_NAME} binaries and tests with"
-      "`-fsanitize-memory-track-origins -fno-omit-frame-pointer`."
-   "Requires ${PROJECT_NAME}_ENABLE_MSAN to be turned ON."
-   "Defaults to ON if, and only if, ${PROJECT_NAME}_ENABLE_MSAN is turned ON."
+set(valid_sanitiser_options
+   ""
+   address               # see https://clang.llvm.org/docs/AddressSanitizer.html
+   undefined             # see https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
+   thread                # see https://clang.llvm.org/docs/ThreadSanitizer.html
+   memory                # see https://clang.llvm.org/docs/MemorySanitizer.html
+   cfi                   # see https://clang.llvm.org/docs/ControlFlowIntegrity.html
+   dataflow              # see https://clang.llvm.org/docs/DataFlowSanitizer.html
+   shadow-call-stack     # see https://clang.llvm.org/docs/ShadowCallStack.html
+   safe-stack            # see https://clang.llvm.org/docs/SafeStack.html
 )
-CMAKE_DEPENDENT_OPTION(${PROJECT_NAME}_ENABLE_ORIGIN_CHECKING ${option_description}
-   ON "${PROJECT_NAME}_ENABLE_MSAN"
-   OFF)
+basic_project_enumerated_option(
+   OPTION_NAME ${PROJECT_NAME}_REQUIRED_SANITISERS
+   DESCRIPTION
+      "Enables a list of sanitisers in Debug mode."
+      "The list of sanitisers must be available to the compiler."
+      "ControlFlowIntegrity (cfi) is not enabled in Debug mode: it is enabled in Release modes only."
+   TYPE STRING LIST
+   EXPECTS ${valid_sanitiser_options}
+   DEFAULT_VALUE address undefined)
 
-option(${PROJECT_NAME}_ENABLE_RELEASE_SANITISATION
-   "Builds ${PROJECT_NAME} binaries and tests with sanitisers in Release mode. Defaults to OFF."
-   OFF)
+basic_project_enumerated_option(
+   OPTION_NAME ${PROJECT_NAME}_OPTIONAL_SANITISERS
+   DESCRIPTION
+      "Enables a list of sanitisers in Debug mode."
+      "Sanitisers not available to the compiler are ignored."
+      "ControlFlowIntegrity (cfi) is not enabled in Debug mode: it is enabled in Release modes."
+   TYPE STRING LIST
+   EXPECTS ${valid_sanitiser_options}
+   DEFAULT_VALUE cfi shadow-call-stack)
 
-BASIC_PROJECT_MULTILINE_STRING(option_description
-   "Builds ${PROJECT_NAME} binaries and tests with `-fsanitize=cfi`."
-   "This is not disabled by ${PROJECT_NAME}_ENABLE_RELEASE_SANITISERS=OFF."
-   "Requires the compiler to be Clang and the build type to match Rel."
-   "Defaults to ON if, and only if, the compiler is Clang and the build type matches Rel."
-)
-CMAKE_DEPENDENT_OPTION(${PROJECT_NAME}_ENABLE_CFI ${option_description}
-   ON "${CMAKE_CXX_COMPILER_ID} MATCHES Clang;${CMAKE_BUILD_TYPE} MATCHES Rel"
+option(${PROJECT_NAME}_ENABLE_ORIGIN_TRACKING
+   "Turns on MemorySanitizer's origin tracking when MemorySanitizer is enabled. Defaults to ON, but is only useful if MemorySanitizer is enabled."
+   ON)
+option(${PROJECT_NAME}_SANITISE_RELEASE
+   "Turns on sanitisers in Release modes. Defaults to OFF."
    OFF)
 
 # Coverage options
-set(CJDB_CODE_COVERAGE_options Off gcov LLVMSourceCoverage)
-set(CJDB_CODE_COVERAGE "gcov"
-   CACHE STRING "Enables/disables code coverage. Options are Off, GCov, and LLVMSourceCoverage.")
-set_property(CACHE CJDB_CODE_COVERAGE PROPERTY STRINGS ${CJDB_CODE_COVERAGE_options})
-
-if(NOT CJDB_CODE_COVERAGE IN_LIST CJDB_CODE_COVERAGE_options)
-   message(FATAL_ERROR "CJDB_CODE_COVERAGE must be one of ${CJDB_CODE_COVERAGE_options}.")
-endif()
+basic_project_enumerated_option(
+   OPTION_NAME ${PROJECT_NAME}_CODE_COVERAGE
+   DESCRIPTION "Enables/disables code coverage. Options are Off, GCov, and LLVMSourceCoverage."
+   TYPE STRING LIST
+   EXPECTS Off gcov LLVMSourceCoverage
+   DEFAULT_VALUE gcov)
 
 include("${CMAKE_BINARY_DIR}/conan_paths.cmake" REQUIRED)
 

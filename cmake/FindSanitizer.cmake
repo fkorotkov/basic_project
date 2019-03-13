@@ -26,14 +26,22 @@ foreach(san ${Sanitizer_FIND_COMPONENTS})
    endif()
 
    cmake_push_check_state(RESET)
+
+   list(APPEND CMAKE_REQUIRED_LIBRARIES -fsanitize=${san})
    if(san STREQUAL "cfi")
-      set(extraneous_flags -fvisibility=default -flto)
-   elseif(san STREQUAL "memory" AND ${PROJECT_NAME}_ENABLE_ORIGIN_CHECKING)
-      set(extraneous_flags -fsanitize-memory-track-origins -fno-omit-frame-pointer)
+      if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+         continue()
+      endif()
+      set(BasicProject::ControlFlowIntegrity_enabled ON)
+      list(APPEND CMAKE_REQUIRED_FLAGS "-fvisibility=default -flto")
+   elseif(san MATCHES "memory")
+      list(APPEND CMAKE_REQUIRED_FLAGS -fno-omit-frame-pointer)
+      set(BasicProject::MemorySanitizer_enabled ON)
+      if(${PROJECT_NAME}_ENABLE_ORIGIN_TRACKING)
+         list(APPEND CMAKE_REQUIRED_FLAGS -fsanitize-memory-track-origins)
+      endif()
    endif()
 
-   list(APPEND CMAKE_REQUIRED_FLAGS ${extraneous_flags})
-   list(APPEND CMAKE_REQUIRED_LIBRARIES -fsanitize=${san})
    check_cxx_compiler_flag(-fsanitize=${san} ${san}_sanitizer_supported)
    cmake_pop_check_state()
 
@@ -46,6 +54,7 @@ foreach(san ${Sanitizer_FIND_COMPONENTS})
       set_property(TARGET Sanitizer::all APPEND PROPERTY
          INTERFACE_LINK_LIBRARIES Sanitizer::${san})
    endif()
+
    unset(extraneous_flags)
 endforeach()
 

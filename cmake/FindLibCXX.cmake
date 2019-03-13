@@ -17,24 +17,22 @@ include(FindPackageHandleStandardArgs)
 include(CheckCXXCompilerFlag)
 include(CMakePushCheckState)
 
-add_library(${PROJECT_NAME}::LIBCXX INTERFACE IMPORTED)
+add_library(${PROJECT_NAME}::LibCXX INTERFACE IMPORTED)
 set(${PROJECT_NAME}_LIBCXX_FOUND ON)
 
 if(TARGET ${PROJECT_NAME}::LIBCXX_${${PROJECT_NAME}_LLVM_VERSION} OR NOT ${PROJECT_NAME}_ENABLE_LIBCXX)
    return()
 endif()
 
-find_path(LIBCXX_INCLUDE_DIR "${${PROJECT_NAME}_LIBCXX_ROOT_DIR}/include/c++/v1")
+unset(LIBCXX_INCLUDE_DIR CACHE)
+find_path(LIBCXX_INCLUDE_DIR
+   NAMES "vector"
+   PATHS "${${PROJECT_NAME}_LIBCXX_ROOT_DIR}"
+   PATH_SUFFIXES "include/c++/v1"
+   NO_DEFAULT_PATH)
+find_package_handle_standard_args(LibCXX REQUIRED_VARS LIBCXX_INCLUDE_DIR)
+
 find_path(LIBCXXABI_DIR "${${PROJECT_NAME}_LIBCXXABI_ROOT_DIR}/lib")
-
-if(NOT LIBCXX_INCLUDE_DIR)
-   message(FATAL_ERROR "Cannot find libc++ from root directory ${${PROJECT_NAME}_LIBCXX_ROOT_DIR}.")
-endif()
-
-if(NOT LIBCXXABI_DIR)
-   message(FATAL_ERROR
-      "Cannot find libc++abi from root directory ${${PROJECT_NAME}_LIBCXXABI_ROOT_DIR}.")
-endif()
 
 set_target_properties(
    ${PROJECT_NAME}::LIBCXX_${${PROJECT_NAME}_LLVM_VERSION}

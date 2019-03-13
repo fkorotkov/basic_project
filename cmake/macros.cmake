@@ -24,9 +24,9 @@ endmacro()
 # Sanity checks a user option.
 #
 function(basic_project_enumerated_option)
-   set(optional_values DEFAULT_VALUE)
+   set(optional_values LIST)
    set(single_value_args OPTION_NAME TYPE)
-   set(multi_value_args DESCRIPTION VALID_VALUES)
+   set(multi_value_args DEFAULT_VALUE DESCRIPTION EXPECTS)
 
    cmake_parse_arguments(
       OPTION_DECLARATOR
@@ -39,25 +39,32 @@ function(basic_project_enumerated_option)
    if(NOT OPTION_DECLARATOR_DEFAULT_VALUE)
       set(default_description "")
    else()
-      set(default_description "Defaults to \"${default_value}\".")
+      set(default_description "Defaults to \"${OPTION_DECLARATOR_DEFAULT_VALUE}\".")
    endif()
 
-   BASIC_PROJECT_MULTILINE_STRING(
-      option_description
-      "${${OPTION_DECLARATOR_DESCRIPTION}}."
-      "Valid options are ${${OPTION_DECLARATOR_VALID_OPTIONS}}."
-      "${default_description}"
-   )
+   set(option_description
+      "${${OPTION_DECLARATOR_DESCRIPTION}}. Valid options are ${OPTION_DECLARATOR_EXPECTS}. ${default_description}")
    set(
-      ${OPTION_DECLARATOR_OPTION_NAME}
-      ${${OPTION_DECLARATOR_DEFAULT_VALUE}} CACHE
-      ${OPTION_DECLARATOR_TYPE} ${option_description}
+      "${OPTION_DECLARATOR_OPTION_NAME}"
+      "${OPTION_DECLARATOR_DEFAULT_VALUE}" CACHE
+      "${OPTION_DECLARATOR_TYPE}" "${option_description}"
    )
 
-   if (NOT ${${OPTION_DECLARATOR_OPTION_NAME}} IN_LIST OPTION_DECLARATOR_VALID_OPTIONS)
-      message(
-         FATAL_ERROR
-         "${OPTION_DECLARATOR_OPTION_NAME} was set to \"${${OPTION_DECLARATOR_OPTION_NAME}}\". It must be one of ${OPTION_DECLARATOR_VALID_OPTIONS}."
-      )
+   if(${OPTION_DECLARATOR_LIST})
+      foreach(i ${${OPTION_DECLARATOR_OPTION_NAME}})
+         if (NOT ${i} IN_LIST OPTION_DECLARATOR_EXPECTS)
+            message(
+               FATAL_ERROR
+               "${OPTION_DECLARATOR_OPTION_NAME} contains invalid value \"${i}\". It must be one of ${OPTION_DECLARATOR_EXPECTS}."
+            )
+         endif()
+      endforeach()
+   else()
+      if (NOT ${${OPTION_DECLARATOR_OPTION_NAME}} IN_LIST OPTION_DECLARATOR_EXPECTS)
+         message(
+            FATAL_ERROR
+            "${OPTION_DECLARATOR_OPTION_NAME} was set to \"${${OPTION_DECLARATOR_OPTION_NAME}}\". It must be one of ${OPTION_DECLARATOR_EXPECTS}."
+         )
+      endif()
    endif()
 endfunction()
