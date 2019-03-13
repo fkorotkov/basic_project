@@ -100,9 +100,7 @@ basic_project_enumerated_option(
 option(${PROJECT_NAME}_ENABLE_ORIGIN_TRACKING
    "Turns on MemorySanitizer's origin tracking when MemorySanitizer is enabled. Defaults to ON, but is only useful if MemorySanitizer is enabled."
    ON)
-option(${PROJECT_NAME}_SANITISE_RELEASE
-   "Turns on sanitisers in Release modes. Defaults to OFF."
-   OFF)
+option(${PROJECT_NAME}_SANITISE_RELEASE "Turns on sanitisers in Release modes. Defaults to OFF." OFF)
 
 # Coverage options
 basic_project_enumerated_option(

@@ -106,6 +106,9 @@ function(add_impl target libraries)
       $<$<BOOL:${CJDB_CODE_COVERAGE}>:CodeCoverage::all>
       $<$<OR:$<CONFIG:Debug>,$<BOOL:${PROJECT_NAME}_SANITISE_RELEASE>>:Sanitizer::all>)
 
+   # TODO: have CFI turn on in release mode when it is allowed
+   # TODO: actually support origin tracking
+
    add_compile_options(-DRANGES_DEEP_STL_INTEGRATION=1)
 endfunction()
 
