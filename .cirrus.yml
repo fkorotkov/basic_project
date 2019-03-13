@@ -18,8 +18,8 @@ task:
     matrix:
       - image: cjdb/cirrus-cpp:xenial
       - image: cjdb/cirrus-cpp:bionic
-    cpu: 16
-    memory: 10G
+    cpu: 4
+    memory: 4G
   env:
     matrix:
       - PROFILE: gcc-5
@@ -36,7 +36,7 @@ task:
         OPTIONAL_SANITIZERS:
       - PROFILE: gcc-8
         CODE_COVERAGE: gcov
-        REQUIRED_SANITIZERS: address;UndefinedBehaviorSanitizer
+        REQUIRED_SANITIZERS: AddressSanitizer;UndefinedBehaviorSanitizer
         OPTIONAL_SANITIZERS:
       - PROFILE: clang-4
         CODE_COVERAGE: LLVMSourceCoverage
