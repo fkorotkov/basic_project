@@ -104,10 +104,18 @@ function(add_impl target libraries)
 
    target_link_libraries("${target}" PRIVATE
       $<$<BOOL:${CJDB_CODE_COVERAGE}>:CodeCoverage::all>
-      $<$<OR:$<CONFIG:Debug>,$<BOOL:${PROJECT_NAME}_SANITISE_RELEASE>>:Sanitizer::all>)
+      $<$<OR:$<CONFIG:Debug>,$<BOOL:${${PROJECT_NAME}_SANITIZE_RELEASE}>>:Sanitizer::all>
+      $<$<AND:$<NOT:$<CONFIG:Debug>>,$<BOOL:${Sanitizer_ControlFlowIntegrity_FOUND}>>:Sanitizer::ControlFlowIntegrity>)
 
-   # TODO: have CFI turn on in release mode when it is allowed
-   # TODO: actually support origin tracking
+   target_compile_options(
+      "${target}" PRIVATE
+      $<$<AND:$<NOT:$<CONFIG:Debug>>,$<BOOL:${Sanitizer_ControlFlowIntegrity_FOUND}>>:
+         -fvisibility=default>
+      $<$<OR:$<CONFIG:Debug>,$<BOOL:${${PROJECT_NAME}_SANITIZE_RELEASE}>>:
+         $<$<OR:$<BOOL:${Sanitizer_MemorySanitizer_FOUND}>,$<BOOL:${Sanitizer_MemorySanitizerWithOrigins_FOUND}>>:
+            -fno-omit-frame-pointer -fno-optimize-sibling-calls
+            $<$<BOOL:${Sanitizer_MemorySanitizerWithOrigins_FOUND}>:
+               -fsanitize-memory-track-origins=2>>>)
 
    add_compile_options(-DRANGES_DEEP_STL_INTEGRATION=1)
 endfunction()

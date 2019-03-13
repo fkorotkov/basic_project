@@ -24,78 +24,78 @@ task:
     matrix:
       - PROFILE: gcc-5
         CODE_COVERAGE: gcov
-        REQUIRED_SANITISERS: address;undefined
-        OPTIONAL_SANITISERS:
+        REQUIRED_SANITIZERS: AddressSanitizer;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS:
       - PROFILE: gcc-6
         CODE_COVERAGE: gcov
-        REQUIRED_SANITISERS: address;undefined
-        OPTIONAL_SANITISERS:
+        REQUIRED_SANITIZERS: AddressSanitizer;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS:
       - PROFILE: gcc-7
         CODE_COVERAGE: gcov
-        REQUIRED_SANITISERS: address;undefined
-        OPTIONAL_SANITISERS:
+        REQUIRED_SANITIZERS: AddressSanitizer;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS:
       - PROFILE: gcc-8
         CODE_COVERAGE: gcov
-        REQUIRED_SANITISERS: address;undefined
-        OPTIONAL_SANITISERS:
+        REQUIRED_SANITIZERS: address;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS:
       - PROFILE: clang-4
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-4-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: address;undefined
-        OPTIONAL_SANITISERS: cfi
+        REQUIRED_SANITIZERS: AddressSanitizer;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS: ControlFlowIntegrity
       - PROFILE: clang-4-libcxx-msan
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: memory;undefined
-        OPTIONAL_SANITISERS: cfi
+        REQUIRED_SANITIZERS: MemorySanitizerWithOrigins;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS: ControlFlowIntegrity
       - PROFILE: clang-5
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-5-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: address;undefined
-        OPTIONAL_SANITISERS: cfi
+        REQUIRED_SANITIZERS: AddressSanitizer;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS: ControlFlowIntegrity
       - PROFILE: clang-5-libcxx-msan
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: memory;undefined
-        OPTIONAL_SANITISERS: cfi
+        REQUIRED_SANITIZERS: MemorySanitizerWithOrigins;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS: ControlFlowIntegrity
       - PROFILE: clang-6
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-6-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: address;undefined
-        OPTIONAL_SANITISERS: cfi
+        REQUIRED_SANITIZERS: AddressSanitizer;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS: ControlFlowIntegrity
       - PROFILE: clang-6-libcxx-msan
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: memory;undefined
-        OPTIONAL_SANITISERS: cfi
+        REQUIRED_SANITIZERS: MemorySanitizerWithOrigins;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS: ControlFlowIntegrity
       - PROFILE: clang-7
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-7-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: address;undefined
-        OPTIONAL_SANITISERS: cfi
+        REQUIRED_SANITIZERS: AddressSanitizer;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS: ControlFlowIntegrity
       - PROFILE: clang-7-libcxx-msan
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: memory;undefined
-        OPTIONAL_SANITISERS: cfi
+        REQUIRED_SANITIZERS: MemorySanitizerWithOrigins;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS: ControlFlowIntegrity
       - PROFILE: clang-8
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-8-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: address;undefined
-        OPTIONAL_SANITISERS: cfi
+        REQUIRED_SANITIZERS: AddressSanitizer;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS: ControlFlowIntegrity
       - PROFILE: clang-8-libcxx-msan
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: memory;undefined
-        OPTIONAL_SANITISERS: cfi
+        REQUIRED_SANITIZERS: MemorySanitizerWithOrigins;UndefinedBehaviorSanitizer
+        OPTIONAL_SANITIZERS: ControlFlowIntegrity
     matrix:
       - BUILD_TYPE: Debug
         ENABLE_CLANG_TIDY: On
       - BUILD_TYPE: Release
         ENABLE_CLANG_TIDY: On
-    #matrix:
-    #  - ENABLE_RELEASE_SANITISERS: Off
-    #  - ENABLE_RELEASE_SANITISERS: On
+    matrix:
+     - ENABLE_RELEASE_SANITIZERS: Off
+     - ENABLE_RELEASE_SANITIZERS: On
   preconfig_script:
     - mkdir build
   conan_config_install_script:
@@ -109,11 +109,11 @@ task:
     - conan build .. --configure
     - cmake .. -Dbasic_project_ENABLE_CLANG_TIDY=${ENABLE_CLANG_TIDY}
     - cmake .. -Dbasic_project_CODE_COVERAGE=${CODE_COVERAGE}
-    - cmake .. -Dbasic_project_REQUIRED_SANITISERS="${REQUIRED_SANITISERS}" -Dbasic_project_OPTIONAL_SANITISERS="${OPTIONAL_SANITISERS}"
-    #- cmake .. -Dbasic_project_SANITISE_RELEASE="${ENABLE_RELEASE_SANITISERS}"
+    - cmake .. -Dbasic_project_REQUIRED_SANITIZERS="${REQUIRED_SANITIZERS}" -Dbasic_project_OPTIONAL_SANITIZERS="${OPTIONAL_SANITIZERS}"
+    - cmake .. -Dbasic_project_SANITIZE_RELEASE="${ENABLE_RELEASE_SANITIZERS}"
   build_script:
     - cd build
-    - conan build .. --build
+    - ninja -v
   tests_script:
     - cd build
     - ctest -j 8 --output-on-failure

@@ -65,42 +65,40 @@ set(${PROJECT_NAME}_LIBCXXABI_ROOT_DIR
    STRING "The path to the root directory for libc++. Defaults to ${PROJECT_NAME}_LIBCXX_ROOT_DIR."
    FORCE)
 
-# Options for sanitisers
-set(valid_sanitiser_options
+# Options for sanitizers
+set(valid_sanitizer_options
    ""
-   address               # see https://clang.llvm.org/docs/AddressSanitizer.html
-   undefined             # see https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
-   thread                # see https://clang.llvm.org/docs/ThreadSanitizer.html
-   memory                # see https://clang.llvm.org/docs/MemorySanitizer.html
-   cfi                   # see https://clang.llvm.org/docs/ControlFlowIntegrity.html
-   dataflow              # see https://clang.llvm.org/docs/DataFlowSanitizer.html
-   shadow-call-stack     # see https://clang.llvm.org/docs/ShadowCallStack.html
-   safe-stack            # see https://clang.llvm.org/docs/SafeStack.html
+   AddressSanitizer           # see https://clang.llvm.org/docs/AddressSanitizer.html
+   UndefinedBehaviorSanitizer # see https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
+   ThreadSanitizer            # see https://clang.llvm.org/docs/ThreadSanitizer.html
+   MemorySanitizer            # see https://clang.llvm.org/docs/MemorySanitizer.html
+   MemorySanitizerWithOrigins # see https://clang.llvm.org/docs/MemorySanitizer.html#origin-tracking
+   ControlFlowIntegrity       # see https://clang.llvm.org/docs/ControlFlowIntegrity.html
+   DataFlowSanitizer          # see https://clang.llvm.org/docs/DataFlowSanitizer.html
+   ShadowCallStack            # see https://clang.llvm.org/docs/ShadowCallStack.html
+   SafeStack                  # see https://clang.llvm.org/docs/SafeStack.html
 )
 basic_project_enumerated_option(
-   OPTION_NAME ${PROJECT_NAME}_REQUIRED_SANITISERS
+   OPTION_NAME ${PROJECT_NAME}_REQUIRED_SANITIZERS
    DESCRIPTION
-      "Enables a list of sanitisers in Debug mode."
-      "The list of sanitisers must be available to the compiler."
-      "ControlFlowIntegrity (cfi) is not enabled in Debug mode: it is only enabled in Release modes."
+      "Enables a list of sanitizers in Debug mode."
+      "The list of sanitizers must be available to the compiler."
+      "ControlFlowIntegrity is not enabled in Debug mode: it is only enabled in Release modes."
    TYPE STRING LIST
-   EXPECTS ${valid_sanitiser_options}
-   DEFAULT_VALUE undefined)
+   EXPECTS ${valid_sanitizer_options}
+   DEFAULT_VALUE UndefinedBehaviorSanitizer)
 
 basic_project_enumerated_option(
-   OPTION_NAME ${PROJECT_NAME}_OPTIONAL_SANITISERS
+   OPTION_NAME ${PROJECT_NAME}_OPTIONAL_SANITIZERS
    DESCRIPTION
-      "Enables a list of sanitisers in Debug mode."
-      "Sanitisers not available to the compiler are ignored."
-      "ControlFlowIntegrity (cfi) is not enabled in Debug mode: it is only enabled in Release modes."
+      "Enables a list of sanitizers in Debug mode."
+      "Sanitizers not available to the compiler are ignored."
+      "ControlFlowIntegrity is not enabled in Debug mode: it is only enabled in Release modes."
    TYPE STRING LIST
-   EXPECTS ${valid_sanitiser_options}
-   DEFAULT_VALUE address cfi)
+   EXPECTS ${valid_sanitizer_options}
+   DEFAULT_VALUE AddressSanitizer ControlFlowIntegrity)
 
-option(${PROJECT_NAME}_ENABLE_ORIGIN_TRACKING
-   "Turns on MemorySanitizer's origin tracking when MemorySanitizer is enabled. Defaults to ON, but is only useful if MemorySanitizer is enabled."
-   ON)
-option(${PROJECT_NAME}_SANITISE_RELEASE "Turns on sanitisers in Release modes. Defaults to OFF." OFF)
+option(${PROJECT_NAME}_SANITIZE_RELEASE "Turns on sanitizers in Release modes. Defaults to OFF." OFF)
 
 # Coverage options
 basic_project_enumerated_option(

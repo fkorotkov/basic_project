@@ -20,38 +20,39 @@
 #     SafeStack
 #     ShadowCallStack
 #
-function(flag_incompatible_sanitisers required optional)
+function(flag_incompatible_sanitizers required optional)
    set(joined "${required}")
    list(APPEND joined "${optional}")
-   list(FIND joined "address" result)
+   list(FIND joined "AddressSanitizer" asan_result)
 
-   if(result GREATER -1)
-      list(FIND joined "thread" thread_result)
-      if(thread_result GREATER -1)
+   if(asan_result GREATER -1)
+      list(FIND joined "ThreadSanitizer" tsan_result)
+      if(tsan_result GREATER -1)
          message(SEND_ERROR "Cannot enable both AddressSanitizer and ThreadSanitizer.")
       endif()
 
-      list(FIND joined "memory" memory_result)
-      if(memory_result GREATER -1)
+      list(FIND joined "MemorySanitizer" msan_result)
+      list(FIND joined "MemorySanitizerWithOrigins" msan_origin_result)
+      if(msan_result GREATER -1 OR msan_origin_result GREATER -1)
          message(SEND_ERROR "Cannot enable both AddressSanitizer and MemorySanitizer.")
       endif()
 
-      list(FIND joined "safe-stack" safe_stack_result)
+      list(FIND joined "SafeStack" safe_stack_result)
       if(safe_stack_result GREATER -1)
          message(SEND_ERROR "Cannot enable both AddressSanitizer and SafeStack.")
       endif()
 
-      list(FIND joined "shadow-call-stack" shadow_call_stack_result)
+      list(FIND joined "ShadowCallStack" shadow_call_stack_result)
       if (shadow_call_stack_result GREATER -1)
          message(SEND_ERROR "Cannot enable both AddressSanitizer and ShadowCallStack.")
       endif()
    endif()
 endfunction()
 
-flag_incompatible_sanitisers(
-   "${${PROJECT_NAME}_REQUIRED_SANITISERS}"
-   "${${PROJECT_NAME}_OPTIONAL_SANITISERS}")
+flag_incompatible_sanitizers(
+   "${${PROJECT_NAME}_REQUIRED_SANITIZERS}"
+   "${${PROJECT_NAME}_OPTIONAL_SANITIZERS}")
 
 find_package(Sanitizer
-   REQUIRED COMPONENTS ${${PROJECT_NAME}_REQUIRED_SANITISERS}
-   OPTIONAL_COMPONENTS ${${PROJECT_NAME}_OPTIONAL_SANITISERS})
+   REQUIRED COMPONENTS ${${PROJECT_NAME}_REQUIRED_SANITIZERS}
+   OPTIONAL_COMPONENTS ${${PROJECT_NAME}_OPTIONAL_SANITIZERS})
