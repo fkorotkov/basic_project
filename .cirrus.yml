@@ -91,9 +91,6 @@ task:
         ENABLE_CLANG_TIDY: On
       - BUILD_TYPE: Release
         ENABLE_CLANG_TIDY: On
-    matrix:
-     - ENABLE_RELEASE_SANITIZERS: Off
-     - ENABLE_RELEASE_SANITIZERS: On
   preconfig_script:
     - mkdir build
   conan_config_install_script:
@@ -108,7 +105,6 @@ task:
     - cmake .. -Dbasic_project_ENABLE_CLANG_TIDY=${ENABLE_CLANG_TIDY}
     - cmake .. -Dbasic_project_CODE_COVERAGE=${CODE_COVERAGE}
     - cmake .. -Dbasic_project_REQUIRED_SANITIZERS="${REQUIRED_SANITIZERS}" -Dbasic_project_OPTIONAL_SANITIZERS="${OPTIONAL_SANITIZERS}"
-    - cmake .. -Dbasic_project_SANITIZE_RELEASE="${ENABLE_RELEASE_SANITIZERS}"
   build_script:
     - cd build
     - ninja -v
