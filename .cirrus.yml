@@ -24,42 +24,70 @@ task:
     matrix:
       - PROFILE: gcc-5
         CODE_COVERAGE: gcov
+        REQUIRED_SANITISERS: address undefined
+        OPTIONAL_SANITISERS:
       - PROFILE: gcc-6
         CODE_COVERAGE: gcov
+        REQUIRED_SANITISERS: address undefined
+        OPTIONAL_SANITISERS:
       - PROFILE: gcc-7
         CODE_COVERAGE: gcov
+        REQUIRED_SANITISERS: address undefined
+        OPTIONAL_SANITISERS:
       - PROFILE: gcc-8
         CODE_COVERAGE: gcov
+        REQUIRED_SANITISERS: address undefined
+        OPTIONAL_SANITISERS:
       - PROFILE: clang-4
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-4-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-      # - PROFILE: clang-4-libcxx-msan
-      #  CODE_COVERAGE: LLVMSourceCoverage
+        REQUIRED_SANITISERS: address undefined
+        OPTIONAL_SANITISERS: cfi
+      - PROFILE: clang-4-libcxx-msan
+        CODE_COVERAGE: LLVMSourceCoverage
+        REQUIRED_SANITISERS: memory undefined
+        OPTIONAL_SANITISERS: cfi
       - PROFILE: clang-5
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-5-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-      # - PROFILE: clang-5-libcxx-msan
-      #  CODE_COVERAGE: LLVMSourceCoverage
+        REQUIRED_SANITISERS: address undefined
+        OPTIONAL_SANITISERS: cfi
+      - PROFILE: clang-5-libcxx-msan
+        CODE_COVERAGE: LLVMSourceCoverage
+        REQUIRED_SANITISERS: memory undefined
+        OPTIONAL_SANITISERS: cfi
       - PROFILE: clang-6
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-6-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-      # - PROFILE: clang-6-libcxx-msan
-      #  CODE_COVERAGE: LLVMSourceCoverage
+        REQUIRED_SANITISERS: address undefined
+        OPTIONAL_SANITISERS: cfi
+      - PROFILE: clang-6-libcxx-msan
+        CODE_COVERAGE: LLVMSourceCoverage
+        REQUIRED_SANITISERS: memory undefined
+        OPTIONAL_SANITISERS: cfi
       - PROFILE: clang-7
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-7-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-      # - PROFILE: clang-7-libcxx-msan
-      #  CODE_COVERAGE: LLVMSourceCoverage
+        REQUIRED_SANITISERS: address undefined
+        OPTIONAL_SANITISERS: cfi
+      - PROFILE: clang-7-libcxx-msan
+        CODE_COVERAGE: LLVMSourceCoverage
+        REQUIRED_SANITISERS: memory undefined
+        OPTIONAL_SANITISERS: cfi
       - PROFILE: clang-8
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-8-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-      # - PROFILE: clang-8-libcxx-msan
-      #  CODE_COVERAGE: LLVMSourceCoverage
+        REQUIRED_SANITISERS: address undefined
+        OPTIONAL_SANITISERS: cfi
+      - PROFILE: clang-8-libcxx-msan
+        CODE_COVERAGE: LLVMSourceCoverage
+        REQUIRED_SANITISERS: memory undefined
+        OPTIONAL_SANITISERS: cfi
     matrix:
       - BUILD_TYPE: Debug
         ENABLE_CLANG_TIDY: On
@@ -76,7 +104,12 @@ task:
   conan_build_configure_script:
     - cd build
     - conan build .. --configure
-    - cmake .. -DCJDB_ENABLE_CLANG_TIDY=${ENABLE_CLANG_TIDY} -DCJDB_CODE_COVERAGE=${CODE_COVERAGE}
+    - |
+      cmake ..                                                     \
+        -Dbasic_project_ENABLE_CLANG_TIDY=${ENABLE_CLANG_TIDY}     \
+        -Dbasic_project_CODE_COVERAGE=${CODE_COVERAGE}             \
+        -Dbasic_project_REQUIRED_SANITISERS=${REQUIRED_SANITISERS} \
+        -Dbasic_project_OPTIONAL_SANITISERS=${OPTIONAL_SANITISERS}
   build_script:
     - cd build
     - conan build .. --build

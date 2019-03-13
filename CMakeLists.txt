@@ -82,20 +82,20 @@ basic_project_enumerated_option(
    DESCRIPTION
       "Enables a list of sanitisers in Debug mode."
       "The list of sanitisers must be available to the compiler."
-      "ControlFlowIntegrity (cfi) is not enabled in Debug mode: it is enabled in Release modes only."
+      "ControlFlowIntegrity (cfi) is not enabled in Debug mode: it is only enabled in Release modes."
    TYPE STRING LIST
    EXPECTS ${valid_sanitiser_options}
-   DEFAULT_VALUE address undefined)
+   DEFAULT_VALUE undefined)
 
 basic_project_enumerated_option(
    OPTION_NAME ${PROJECT_NAME}_OPTIONAL_SANITISERS
    DESCRIPTION
       "Enables a list of sanitisers in Debug mode."
       "Sanitisers not available to the compiler are ignored."
-      "ControlFlowIntegrity (cfi) is not enabled in Debug mode: it is enabled in Release modes."
+      "ControlFlowIntegrity (cfi) is not enabled in Debug mode: it is only enabled in Release modes."
    TYPE STRING LIST
    EXPECTS ${valid_sanitiser_options}
-   DEFAULT_VALUE cfi shadow-call-stack)
+   DEFAULT_VALUE address cfi)
 
 option(${PROJECT_NAME}_ENABLE_ORIGIN_TRACKING
    "Turns on MemorySanitizer's origin tracking when MemorySanitizer is enabled. Defaults to ON, but is only useful if MemorySanitizer is enabled."

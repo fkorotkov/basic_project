@@ -16,13 +16,14 @@
 from conans import ConanFile, CMake, RunEnvironment, tools
 import os
 
+
 class Project_name(ConanFile):
     name = "project_name"
     version = "1.0"
     settings = "os", "compiler", "arch", "build_type"
     generators = "cmake", "cmake_paths", "virtualrunenv"
-    requires = "range-v3/v1.0-beta@cjdb/beta"
-    exports_sources = "CMakeLists.txt", ".clang*", "test/*", "src/*", "cmake/*"
+    requires = "range-v3/v1.0-beta@cjdb/beta", "doctest/2.2.0@bincrafters/stable"
+    exports_sources = "CMakeLists.txt", ".clang*", "include/*", "test/*", "src/*", "cmake/*"
     no_copy_source = True
 
     def build(self):
