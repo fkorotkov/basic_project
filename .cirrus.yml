@@ -15,8 +15,7 @@
 #
 task:
   container:
-    matrix:
-      - image: cjdb/cirrus-cpp:bionic
+    image: cjdb/cirrus-cpp:bionic
     cpu: 4
     memory: 4G
   env:
