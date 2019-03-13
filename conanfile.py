@@ -22,7 +22,7 @@ class Project_name(ConanFile):
     version = "1.0"
     settings = "os", "compiler", "arch", "build_type"
     generators = "cmake", "cmake_paths", "virtualrunenv"
-    requires = "range-v3/v1.0-beta@cjdb/beta", "doctest/2.2.0@bincrafters/stable"
+    requires = "range-v3/v1.0-beta@cjdb/beta", "doctest/2.2.0@bincrafters/stable", "boost/1.69.0@conan/stable"
     exports_sources = "CMakeLists.txt", ".clang*", "include/*", "test/*", "src/*", "cmake/*"
     no_copy_source = True
 
