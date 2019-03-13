@@ -106,9 +106,7 @@ task:
     - conan build .. --configure
     - cmake .. -Dbasic_project_ENABLE_CLANG_TIDY=${ENABLE_CLANG_TIDY}
     - cmake .. -Dbasic_project_CODE_COVERAGE=${CODE_COVERAGE}
-    - echo ${OPTIONAL_SANITISERS}
-    - echo ${REQUIRED_SANITISERS}
-    # - cmake .. -Dbasic_project_REQUIRED_SANITISERS="${REQUIRED_SANITISERS}" -Dbasic_project_OPTIONAL_SANITISERS="${OPTIONAL_SANITISERS}"
+    - cmake .. -Dbasic_project_REQUIRED_SANITISERS="${REQUIRED_SANITISERS}" -Dbasic_project_OPTIONAL_SANITISERS="${OPTIONAL_SANITISERS}"
   build_script:
     - cd build
     - conan build .. --build
