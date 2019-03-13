@@ -24,69 +24,69 @@ task:
     matrix:
       - PROFILE: gcc-5
         CODE_COVERAGE: gcov
-        REQUIRED_SANITISERS: address undefined
+        REQUIRED_SANITISERS: address;undefined
         OPTIONAL_SANITISERS:
       - PROFILE: gcc-6
         CODE_COVERAGE: gcov
-        REQUIRED_SANITISERS: address undefined
+        REQUIRED_SANITISERS: address;undefined
         OPTIONAL_SANITISERS:
       - PROFILE: gcc-7
         CODE_COVERAGE: gcov
-        REQUIRED_SANITISERS: address undefined
+        REQUIRED_SANITISERS: address;undefined
         OPTIONAL_SANITISERS:
       - PROFILE: gcc-8
         CODE_COVERAGE: gcov
-        REQUIRED_SANITISERS: address undefined
+        REQUIRED_SANITISERS: address;undefined
         OPTIONAL_SANITISERS:
       - PROFILE: clang-4
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-4-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: address undefined
+        REQUIRED_SANITISERS: address;undefined
         OPTIONAL_SANITISERS: cfi
       - PROFILE: clang-4-libcxx-msan
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: memory undefined
+        REQUIRED_SANITISERS: memory;undefined
         OPTIONAL_SANITISERS: cfi
       - PROFILE: clang-5
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-5-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: address undefined
+        REQUIRED_SANITISERS: address;undefined
         OPTIONAL_SANITISERS: cfi
       - PROFILE: clang-5-libcxx-msan
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: memory undefined
+        REQUIRED_SANITISERS: memory;undefined
         OPTIONAL_SANITISERS: cfi
       - PROFILE: clang-6
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-6-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: address undefined
+        REQUIRED_SANITISERS: address;undefined
         OPTIONAL_SANITISERS: cfi
       - PROFILE: clang-6-libcxx-msan
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: memory undefined
+        REQUIRED_SANITISERS: memory;undefined
         OPTIONAL_SANITISERS: cfi
       - PROFILE: clang-7
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-7-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: address undefined
+        REQUIRED_SANITISERS: address;undefined
         OPTIONAL_SANITISERS: cfi
       - PROFILE: clang-7-libcxx-msan
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: memory undefined
+        REQUIRED_SANITISERS: memory;undefined
         OPTIONAL_SANITISERS: cfi
       - PROFILE: clang-8
         CODE_COVERAGE: LLVMSourceCoverage
       - PROFILE: clang-8-libcxx
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: address undefined
+        REQUIRED_SANITISERS: address;undefined
         OPTIONAL_SANITISERS: cfi
       - PROFILE: clang-8-libcxx-msan
         CODE_COVERAGE: LLVMSourceCoverage
-        REQUIRED_SANITISERS: memory undefined
+        REQUIRED_SANITISERS: memory;undefined
         OPTIONAL_SANITISERS: cfi
     matrix:
       - BUILD_TYPE: Debug
